@@ -4,7 +4,7 @@ import { validatePost } from '../schemas/posts.js';
 export const post = async (req, res, next) => {
   try {
     if (validatePost(req.body)) {
-      const result = await postQuery();
+      const result = await postQuery(req);
       res.status(200).json(result);
     }
   } catch (error) {
