@@ -14,7 +14,7 @@ export const post = async (req, res, next) => {
         .send("<h1>Post cant be created. Incorrect syntax</h1>");
     }
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ success: false, message: error });
     next(error);
   }
 };
@@ -24,6 +24,7 @@ export const getAll = async (req, res, next) => {
     const result = await getAllQuery();
     res.json(result);
   } catch (error) {
+    res.status(500).json({ success: false, message: error });
     next(error);
   }
 };

@@ -1,43 +1,69 @@
-import React, { useState } from 'react';
-import { Form, useNavigate } from 'react-router-dom';
-import { preview } from '../assets';
-import { getRandomPrompt } from '../utils';
-import { FormField, Loader } from '../components';
+import React, { useState } from "react";
+import { Form, useNavigate } from "react-router-dom";
+import { preview } from "../assets";
+import { getRandomPrompt } from "../utils";
+import { FormField, Loader } from "../components";
 
 const CreatePost = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    name: '',
-    prompt: '',
-    photo: '',
+    name: "",
+    prompt: "",
+    photo: "",
   });
-  const [generatingImg, setgeneratingImg] = useState(false);
+  const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const generateImg = async () => {
     if (form.prompt) {
       try {
-        setgeneratingImg(true);
-        const response = await fetch('', {
-          method: 'POST',
+        setGeneratingImg(true);
+        const response = await fetch("http://localhost:8001/api/v1/dalle/", {
+          method: "POST",
           header: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ prompt: form.prompt }),
         });
         const data = await response.json();
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (error) {
+        console.log(error);
         alert(error);
       } finally {
-        setgeneratingImg(false);
+        setGeneratingImg(false);
       }
     } else {
-      alert('Please enter a prompt');
+      alert("Please enter a prompt");
     }
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (form.prompt && form.photo) {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          "http://localhost:8001/api/v1/post/create",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form),
+          }
+        );
+        await response.json();
+        navigate("/");
+      } catch (error) {
+        alert(error);
+        setLoading(false);
+      }
+    } else {
+      alert("Please enter a prompt and generate an image");
+    }
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -52,25 +78,25 @@ const CreatePost = () => {
     <section className="max-w-7xl mx-auto">
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
-        <p className="mt-2 text-[#666e75  text-[16px] max-w-[500px]">
+        <p className="mt-2 text-[#666e75]  text-[16px] max-w-[500px]">
           Create imaginative and visually stunning images with AI
         </p>
       </div>
       <form className="mt-16 max-w-3xl " onSubmit={handleSubmit}>
         <div className="flex flex-col gap-5">
           <FormField
-            labelName0="name"
+            labelName="Your name"
             type="text"
             name="name"
-            placeholder="aa"
+            placeholder="Ex, John Doe"
             value={form.name}
             handleChange={handleChange}
           />
           <FormField
-            labelName0="prompt"
+            labelName="Prompt"
             type="text"
             name="prompt"
-            placeholder="some prompt"
+            placeholder="An Impressionist oil painting of sunflowers in a purple vase…"
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
@@ -101,7 +127,7 @@ const CreatePost = () => {
             onClick={generateImg}
             className="w-full sm:w-auto text-center px-5 py-2.5  font-medium rounded-md text-sm text-white bg-green-700"
           >
-            {generatingImg ? 'Generating Image' : 'Generate'}
+            {generatingImg ? "Generating Image" : "Generate"}
           </button>
         </div>
         <div className="mt-10">
@@ -114,7 +140,7 @@ const CreatePost = () => {
             className="mt-3 text-white bg-[#6469ff]
           font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
-            {loading ? 'Sharing...' : 'Share with the community'}
+            {loading ? "Sharing..." : "Share with the community"}
           </button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { logo } from "./assets";
 import { Home, CreatePost } from "./pages";
+import "./index.css";
 
 const App = () => {
   return (
@@ -11,7 +12,7 @@ const App = () => {
         </Link>
         <Link
           to="/create-post"
-          className="font-inter px-4 py-2 rounded-md font-medium bg-[#6469ff"
+          className="font-inter px-4 py-2 rounded-md font-medium bg-[#6469ff]"
         >
           Create
         </Link>

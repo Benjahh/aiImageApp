@@ -19,12 +19,12 @@ client
   .catch((err) => console.error("Error connecting to PostgreSQL", err));
 
 export const postQuery = async ({ body }) => {
-  const { name, prompt, photo } = body;
-
   try {
+    const { name, prompt, photo } = body;
+    const photoUrl = await cloudinary.uploader.upload(photo);
     await client.query(
       "INSERT INTO posts (name, prompt, photo) VALUES ($1, $2, $3); ",
-      [name, prompt, photo]
+      [name, prompt, photoUrl.url]
     );
   } catch (error) {
     console.error(error);
