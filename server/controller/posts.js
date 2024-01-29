@@ -1,13 +1,20 @@
-import { postQuery, getAllQuery } from '../model/post.js';
-import { validatePost } from '../schemas/posts.js';
+import { postQuery, getAllQuery } from "../model/post.js";
+import { validatePost } from "../schemas/posts.js";
 
 export const post = async (req, res, next) => {
+  const validation = validatePost(req.body);
   try {
-    if (validatePost(req.body)) {
-      const result = await postQuery(req);
-      res.status(200).json(result);
+    if (validation.success) {
+      await postQuery(req);
+      res.status(201).json("<h1> Post created </h1>");
+    } else {
+      console.error(validation.error);
+      return res
+        .status(400)
+        .send("<h1>Post cant be created. Incorrect syntax</h1>");
     }
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -15,7 +22,7 @@ export const post = async (req, res, next) => {
 export const getAll = async (req, res, next) => {
   try {
     const result = await getAllQuery();
-    res.send(result).json();
+    res.json(result);
   } catch (error) {
     next(error);
   }

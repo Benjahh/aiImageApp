@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/v1/post/create
+content-type: application/json
+
+{
+    "name": "works like a charm",
+    "prompt": "Authorization ",
+    "photo": "samplephoto5"
+}
