@@ -1,9 +1,12 @@
-import { postQuery, getAllQuery } from "../model/post";
+import { postQuery, getAllQuery } from '../model/post.js';
+import { validatePost } from '../schemas/posts.js';
 
 export const post = async (req, res, next) => {
   try {
-    const result = await postQuery();
-    res.status(200).json(result);
+    if (validatePost(req.body)) {
+      const result = await postQuery();
+      res.status(200).json(result);
+    }
   } catch (error) {
     next(error);
   }

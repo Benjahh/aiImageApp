@@ -1,20 +1,41 @@
-import React, { useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
-import { preview } from "../assets";
-import { getRandomPrompt } from "../utils";
-import { FormField, Loader } from "../components";
+import React, { useState } from 'react';
+import { Form, useNavigate } from 'react-router-dom';
+import { preview } from '../assets';
+import { getRandomPrompt } from '../utils';
+import { FormField, Loader } from '../components';
 
 const CreatePost = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    name: "",
-    prompt: "",
-    photo: "",
+    name: '',
+    prompt: '',
+    photo: '',
   });
   const [generatingImg, setgeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const generateImg = () => {};
+  const generateImg = async () => {
+    if (form.prompt) {
+      try {
+        setgeneratingImg(true);
+        const response = await fetch('', {
+          method: 'POST',
+          header: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt: form.prompt }),
+        });
+        const data = await response.json();
+        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
+      } catch (error) {
+        alert(error);
+      } finally {
+        setgeneratingImg(false);
+      }
+    } else {
+      alert('Please enter a prompt');
+    }
+  };
 
   const handleSubmit = () => {};
 
@@ -80,7 +101,7 @@ const CreatePost = () => {
             onClick={generateImg}
             className="w-full sm:w-auto text-center px-5 py-2.5  font-medium rounded-md text-sm text-white bg-green-700"
           >
-            {generatingImg ? "Generating Image" : "Generate"}
+            {generatingImg ? 'Generating Image' : 'Generate'}
           </button>
         </div>
         <div className="mt-10">
@@ -93,7 +114,7 @@ const CreatePost = () => {
             className="mt-3 text-white bg-[#6469ff]
           font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
-            {loading ? "Sharing..." : "Share with the community"}
+            {loading ? 'Sharing...' : 'Share with the community'}
           </button>
         </div>
       </form>

@@ -1,6 +1,4 @@
-import z from "zod";
-
-safePar;
+import z from 'zod';
 
 const postSchema = z.object({
   name: z.string(),
