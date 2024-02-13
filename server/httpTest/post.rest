@@ -1,0 +1,7 @@
+POST http://localhost:8001/api/v1/dalle
+Content-Type: application/json
+
+
+{
+    "prompt": "a sea otter with a pearl earring by Johannes Vermeer"
+}

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Loader, Card, FormField } from "../components/";
+import React, { useState, useEffect } from 'react';
+import { Loader, Card, FormField } from '../components/';
 
 const RenderCards = ({ data, title }) => {
   if (data?.legnth > 0)
@@ -13,21 +13,22 @@ const RenderCards = ({ data, title }) => {
 const Home = () => {
   const [loading, setLoading] = useState(false);
   const [allPosts, setAllPosts] = useState(null);
-  const [searchText, setsearchText] = useState(" ");
+  const [searchText, setsearchText] = useState(' ');
 
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:8001/api/v1/post", {
-          method: "GET",
+        const response = await fetch('http://localhost:8001/api/v1/post', {
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
         if (response.ok) {
           const result = await response.json();
-          setAllPosts(result.data.reverse());
+          console.log(result);
+          setAllPosts(result);
         }
       } catch (error) {
         alert(error);

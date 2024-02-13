@@ -1,9 +1,9 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import { post } from "../controller/dalle.js";
+import { post } from '../controller/dalle.js';
 
 const dalleRouter = Router();
 
-dalleRouter.get("/", post);
+dalleRouter.post('/', post);
 
 export default dalleRouter;

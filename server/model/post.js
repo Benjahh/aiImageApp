@@ -1,7 +1,7 @@
-import pg from "pg";
+import pg from 'pg';
 const { Client } = pg;
-import { v2 as cloudinary } from "cloudinary";
-import * as dotenv from "dotenv";
+import { v2 as cloudinary } from 'cloudinary';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -15,15 +15,15 @@ const client = new Client(process.env.DATABASE_URL);
 
 client
   .connect()
-  .then(() => console.log("Connected to PostgreSQL"))
-  .catch((err) => console.error("Error connecting to PostgreSQL", err));
+  .then(() => console.log('Connected to PostgreSQL'))
+  .catch((err) => console.error('Error connecting to PostgreSQL', err));
 
 export const postQuery = async ({ body }) => {
   try {
     const { name, prompt, photo } = body;
     const photoUrl = await cloudinary.uploader.upload(photo);
     await client.query(
-      "INSERT INTO posts (name, prompt, photo) VALUES ($1, $2, $3); ",
+      'INSERT INTO posts (name, prompt, photo) VALUES ($1, $2, $3); ',
       [name, prompt, photoUrl.url]
     );
   } catch (error) {
@@ -33,7 +33,7 @@ export const postQuery = async ({ body }) => {
 
 export const getAllQuery = async () => {
   try {
-    const result = await client.query("SELECT * FROM posts");
+    const result = await client.query('SELECT * FROM posts');
 
     return result.rows;
   } catch (error) {
