@@ -33,7 +33,9 @@ export const postQuery = async ({ body }) => {
 
 export const getAllQuery = async () => {
   try {
-    const result = await client.query('SELECT * FROM posts');
+    const result = await client.query(
+      'SELECT rowid, prompt, photo, name FROM posts'
+    );
 
     return result.rows;
   } catch (error) {

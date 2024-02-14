@@ -1,6 +1,7 @@
-import { download } from "../assets";
-import { downloadImage } from "../utils";
-const Card = ({ _id, name, prompt, photo }) => {
+import { download } from '../assets';
+import { downloadImage } from '../utils';
+const Card = ({ rowid, name, prompt, photo }) => {
+  console.log(rowid);
   return (
     <div className="rounded-xl group relative shadow-card hover:shadow-cardhover card">
       <img
@@ -20,7 +21,7 @@ const Card = ({ _id, name, prompt, photo }) => {
           <button
             className="outline-none bg-transparent border-none"
             type="button"
-            onClick={() => downloadImage(_id, photo)}
+            onClick={() => downloadImage(rowid, photo)}
           >
             <img
               src={download}
